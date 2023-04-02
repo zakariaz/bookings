@@ -3,9 +3,9 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/zkz/bookings/pkg/config"
-	"github.com/zkz/bookings/pkg/models"
-	"github.com/zkz/bookings/pkg/render"
+	"github.com/zakariaz/bookings/pkg/config"
+	"github.com/zakariaz/bookings/pkg/models"
+	"github.com/zakariaz/bookings/pkg/render"
 )
 
 // Repo The repository used by the handlers

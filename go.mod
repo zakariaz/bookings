@@ -1,4 +1,4 @@
-module github.com/zkz/bookings
+module github.com/zakariaz/bookings
 
 go 1.20
 
