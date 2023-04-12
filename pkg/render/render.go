@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"path/filepath"
 
+	"github.com/justinas/nosurf"
 	"github.com/zakariaz/bookings/pkg/config"
 	"github.com/zakariaz/bookings/pkg/models"
 )
@@ -18,12 +19,13 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
-func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	td.CSRFToken = nosurf.Token(r)
 	return td
 }
 
 // parseTemplate parses the teplates, render them and send them to the browser
-func RenderTemplate(w http.ResponseWriter, templt string, td *models.TemplateData) {
+func RenderTemplate(w http.ResponseWriter, r *http.Request, templt string, td *models.TemplateData) {
 
 	var tc map[string]*template.Template
 	if app.UseCache {
@@ -46,7 +48,7 @@ func RenderTemplate(w http.ResponseWriter, templt string, td *models.TemplateDat
 	// not available or we cant write to the ResponseWriter?
 	buf := new(bytes.Buffer)
 
-	td = AddDefaultData(td)
+	td = AddDefaultData(td, r)
 	err := t.Execute(buf, td) // overriding the `err` variable instead of redefining it
 	if err != nil {
 		log.Println(err)
