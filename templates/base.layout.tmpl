@@ -184,34 +184,40 @@
         })
       }
 
-      let custom = async (c) => {
+      const custom = async (c) => {
         const { msg = "", title = "" } = c;
 
-        const { value: formValues } = await Swal.fire({
+        const { value: result } = await Swal.fire({
           title: title,
           html: msg,
-          backdrom: false,
+          backdrop: false,
           focusConfirm: false,
           showConfirmButton: true,
           showCancelButton: true,
           willOpen: () => {
-            const elem = document.getElementById('reservation-dates-modal');
-            const rp = new DateRangePicker(elem, {
-              format: 'yyyy-mm-dd',
-              showOnFocus: false,
-              orientation: "top",
-            });
+            if (c.willOpen !== undefined) c.willOpen();
           },
           preConfirm: () => {
-            return [
-              document.getElementById('start').value,
-              document.getElementById('end').value
-            ]
+            if (c.preConfirm !== undefined) c.preConfirm();
           },
         });
 
-        if (formValues) {
-          Swal.fire(JSON.stringify(formValues))
+        try {
+          if (result.isDismissed) {
+
+            if (result.value !== "") {
+              if (c.callback !== undefined) {
+                c.callback(result)
+              }
+            } else {
+              c.callback(false);
+            }
+          } else {
+            c.callback(false);
+          }
+        } catch (error) {
+          console.error(`the content of result is ${result}`);
+          console.log(error)
         }
       }
 
