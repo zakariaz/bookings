@@ -5,7 +5,8 @@
     <div class="row">
         <div class="col">
             <h1>Make reservation</h1>
-            <form action="" method="post" class="row g-3 needs-validation" novalidate>
+            <form action="/make-reservation" method="post" class="row g-3" novalidate>
+                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
                 <div class="col-md-6">
                     <label for="first_name" class="form-label">First Name:</label>
                     <input type="text" name="first_name" id="first_name" class="form-control" required
@@ -25,7 +26,12 @@
                 </div>
 
                 <hr>
-                <input type="submit" value="Make reservation" class="btn btn-primary col-md-2">
+
+                <div class="row">
+                    <div class="col">
+                        <input type="submit" value="Make reservation" class="btn btn-primary">
+                    </div>
+                </div>
             </form>
         </div>
     </div>
